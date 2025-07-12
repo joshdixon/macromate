@@ -5,8 +5,77 @@ import { HelloWave } from "@/components/HelloWave";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import {Button} from "@/components/ui/button";
+import * as AuthSession from 'expo-auth-session';
+import * as WebBrowser from 'expo-web-browser';
+import {useAuthenticateWorkOsUser, useWorkOsRedirect} from "@/lib/api/endpoints/macromate-webapi/macromate-webapi";
+import useAuthStore from "@/hooks/useAuthStore";
+import { useRouter } from "expo-router";
+import {useEffect} from "react";
 
 export default function HomeScreen() {
+  const redirectMutation = useWorkOsRedirect();
+  const authMutation = useAuthenticateWorkOsUser();
+  const setAccessToken = useAuthStore((state) => state.setAccessToken);
+  const accessToken = useAuthStore((state)=>state.accessToken);
+  const router = useRouter();
+
+  useEffect(()=>{
+    if(!accessToken){
+      router.replace("/login");
+    }
+  },[accessToken]);
+
+  const handleLogin = async () => {
+    console.log("Login");
+    try {
+      const redirect = AuthSession.makeRedirectUri().toString();
+      const redirectUrlResult = await redirectMutation.mutateAsync({
+        data: {
+          provider: "GoogleOAuth",
+          returnPath: redirect,
+        },
+      });
+
+      // Call openAuthSessionAsync with the url and redirect from above, and save the returned object to a variable
+      const result = await WebBrowser.openAuthSessionAsync(redirectUrlResult.redirectUrl, redirect);
+
+      // Pull the code returned in the result stored as a param in the url field. In this case, we are using a regular expression pattern to pull it from the url.
+      const codeRegex = /code=([^&]+)/;
+      const matches = result.url.match(codeRegex);
+      const code = matches ? matches[1] : null;
+      
+      const stateRegex = /state=([^&]+)/;
+      const stateMatches = result.url.match(stateRegex);
+      const state = stateMatches ? stateMatches[1] : null;
+      
+      console.log("code: ", code);
+      authMutation.mutate(
+        {
+          data: {
+            code,
+            state,
+            redirectUri: `${window.location.origin}/workos-callback`,
+          },
+        },
+        {
+          onSuccess: ({accessToken, refreshToken}) => {
+            // TODO: stash tokens (cookie / localStorage / NextAuth signIn())
+            console.log("JWT", accessToken, "refresh", refreshToken);
+            setAccessToken(accessToken);
+            //
+            // router.replace("/app/environments/create");
+          },
+          onError: () => {
+            // handled below via authMutation.isError
+          },
+        },
+      );
+    }
+    catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
@@ -36,6 +105,9 @@ export default function HomeScreen() {
           </ThemedText>{" "}
           to open developer tools.
         </ThemedText>
+        <Button onPress={handleLogin}>
+          <ThemedText type="link">Learn more</ThemedText>
+        </Button>
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Step 2: Explore</ThemedText>

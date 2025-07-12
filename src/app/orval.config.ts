@@ -7,7 +7,7 @@ export default defineConfig({
   // key will be the namespace in the generated files
   api: {
     input: {
-      target: process.env.NEXT_PUBLIC_API_URL + "swagger/v1/swagger.json",
+      target: process.env.EXPO_PUBLIC_API_URL + "swagger/v1/swagger.json",
     },
     output: {
       mode: "tags-split",
@@ -28,7 +28,7 @@ export default defineConfig({
   },
   zod: {
     input: {
-      target: process.env.NEXT_PUBLIC_API_URL + "swagger/v1/swagger.json",
+      target: process.env.EXPO_PUBLIC_API_URL + "swagger/v1/swagger.json",
     },
     output: {
       mode: "tags-split",

@@ -35,7 +35,7 @@ async function refreshTokensIfNeeded(): Promise<void> {
 }
 
 const getUrl = (contextUrl: string): string => {
-  let baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  let baseUrl = process.env.EXPO_PUBLIC_API_URL;
   // ensure only one slash between base and context
   if (baseUrl?.endsWith("/")) {
     baseUrl = baseUrl.slice(0, -1);

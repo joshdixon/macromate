@@ -33,7 +33,7 @@ internal class WorkOsRedirectHandler : ICarterModule
                 var opts = new GetAuthorizationURLOptions
                 {
                     ClientId = workOsOptions.Value.ClientId,
-                    RedirectURI = $"{context.Request.Scheme}://localhost:3000{request.ReturnPath}",
+                    RedirectURI = $"{request.ReturnPath}",
                     State = state,
                     Provider = request.Provider
                 };
