@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MacroMate.WebApi", "src\MacroMate.WebApi\MacroMate.WebApi.csproj", "{4E50794E-CC5C-4F97-B8FA-425E0F7C5981}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D0E37BC1-1048-434C-A664-4F698F2DDA44}"
+	ProjectSection(SolutionItems) = preProject
+		compose.yaml = compose.yaml
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4E50794E-CC5C-4F97-B8FA-425E0F7C5981}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E50794E-CC5C-4F97-B8FA-425E0F7C5981}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E50794E-CC5C-4F97-B8FA-425E0F7C5981}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E50794E-CC5C-4F97-B8FA-425E0F7C5981}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
